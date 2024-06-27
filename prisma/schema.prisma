@@ -13,59 +13,74 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id              String     @id @default(auto()) @map("_id") @db.ObjectId
+  first_name      String     @db.String
+  last_name       String     @db.String
+  profile_picture String     @db.String
+  access_token    String     @db.String
+  refresh_token   String     @db.String
+  creator         Creator[]
+  consumer        Consumer[]
+}
+
 model Creator {
-  id   String  @id @default(auto()) @map("_id") @db.ObjectId
-  first_name String @db.String
-  last_name String @db.String
-  bio String @db.String
-  social_links String[] @db.String
-  profile_picture String @db.String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  price Float @db.Double
-  videos Video[]
-  payments Payment[]
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  first_name   String    @db.String
+  last_name    String    @db.String
+  bio          String    @db.String
+  email        String    @db.String
+  social_links String[]  @db.String
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+  price        Float     @db.Double
+  userid       String    @db.String
+  user         User      @relation(fields: [userid], references: [id])
+  videos       Video[]
+  payments     Payment[]
 }
 
-model Consumer{
-  id  String @id @default(auto()) @map("_id") @db.ObjectId
-  username String @db.String
-  profile_pic String @db.String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  videos Video[]
-  payments Payment[]
+model Consumer {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  username   String    @db.String
+  email      String    @db.String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  userid     String    @db.String
+  user       User      @relation(fields: [userid], references: [id])
+  videos     Video[]
+  payments   Payment[]
 }
 
-model Video{
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  title String @db.String
-  description String @db.String
-  video_url String @db.String
-  thumbnail_url String @db.String
-  creator_id String @db.String
-  consumer_id String @db.String
-  uplodaded_by Creator @relation(fields: [creator_id], references: [id])
-  uploaded_for Consumer @relation(fields: [consumer_id], references: [id])
-  uploaded_at DateTime @default(now())
+model Video {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  title         String   @db.String
+  description   String   @db.String
+  video_url     String   @db.String
+  thumbnail_url String   @db.String
+  creator_id    String   @db.String
+  consumer_id   String   @db.String
+  uplodaded_by  Creator  @relation(fields: [creator_id], references: [id])
+  uploaded_for  Consumer @relation(fields: [consumer_id], references: [id])
+  uploaded_at   DateTime @default(now())
 }
 
-model Message{
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  message String @db.String
-  sender_id String @db.String
-  receiver_id String @db.String
-  sent_at DateTime @default(now())
+model Message {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  message     String   @db.String
+  sender_id   String   @db.String
+  receiver_id String   @db.String
+  sent_at     DateTime @default(now())
 }
 
-model Payment{
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  tx_ref String @db.String
-  amount Float @db.Double
-  currency String @db.String
-  creator_id String @db.String
-  consumer_id String @db.String
-  payment_for Creator @relation(fields: [consumer_id], references: [id])
-  payment_by Consumer @relation(fields: [consumer_id], references: [id])
-  payment_at DateTime @default(now())
+model Payment {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  tx_ref      String   @db.String
+  amount      Float    @db.Double
+  currency    String   @db.String
+  creator_id  String   @db.String
+  consumer_id String   @db.String
+  payment_for Creator  @relation(fields: [consumer_id], references: [id])
+  payment_by  Consumer @relation(fields: [consumer_id], references: [id])
+  payment_at  DateTime @default(now())
 }

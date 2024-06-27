@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class LoginService {
+export class SignupService {
   googleLogin(req) {
     if (!req.user) {
       return 'Failed to login';
