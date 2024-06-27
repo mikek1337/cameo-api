@@ -17,6 +17,7 @@ model User {
   id              String     @id @default(auto()) @map("_id") @db.ObjectId
   first_name      String     @db.String
   last_name       String     @db.String
+  email           String     @db.String
   profile_picture String     @db.String
   access_token    String     @db.String
   refresh_token   String     @db.String
@@ -29,7 +30,6 @@ model Creator {
   first_name   String    @db.String
   last_name    String    @db.String
   bio          String    @db.String
-  email        String    @db.String
   social_links String[]  @db.String
   created_at   DateTime  @default(now())
   updated_at   DateTime  @updatedAt
@@ -43,7 +43,6 @@ model Creator {
 model Consumer {
   id         String    @id @default(auto()) @map("_id") @db.ObjectId
   username   String    @db.String
-  email      String    @db.String
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   userid     String    @db.String

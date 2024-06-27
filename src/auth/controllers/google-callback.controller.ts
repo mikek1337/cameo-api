@@ -1,4 +1,4 @@
-import { Controller, Get, Request, Response, UseGuards } from '@nestjs/common';
+import { Controller, Get, Request, Response, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { GoogleOAuthGuard } from 'src/google-oauth.guard';
 import { SignupService } from '../service/signup.service';
 
@@ -11,7 +11,11 @@ export class GoogleCallbackController {
   async googleAuth(@Request() req) {}
   @Get('callback')
   @UseGuards(GoogleOAuthGuard)
-  googleCallback(@Request() res) {
-    return this.signupService.googleLogin(res);
+  async googleCallback(@Request() res) {
+    const response = await this.signupService.googleLogin(res);
+    if (!response){
+      return new UnauthorizedException() 
+    }
+    return { message: 'User created successfully'}
   }
 }
