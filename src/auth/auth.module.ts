@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { LoginController } from './controllers/login.controller';
+import { AuthController } from './controllers/auth.controller';
 import { SignupService } from './service/signup.service';
 import { GoogleStrategy } from './google.strategy';
 import { GoogleCallbackController } from './controllers/google-callback.controller';
@@ -8,7 +8,7 @@ import { UserService } from 'src/user/service/user.service';
 
 @Module({
   imports: [PrismaModule],
-  controllers: [LoginController, GoogleCallbackController],
+  controllers: [AuthController, GoogleCallbackController],
   providers: [SignupService, GoogleStrategy, UserService],
 })
 export class AuthModule {}
