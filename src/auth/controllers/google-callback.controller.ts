@@ -24,6 +24,7 @@ export class GoogleCallbackController {
     if (!response) {
       return new UnauthorizedException();
     }
+    //need to return access_token in cookie
     /* res.cookie('access_token', req.accessToken,{
       httpOnly: true,
       secure: true,
