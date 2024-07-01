@@ -1,8 +1,9 @@
 import {
   Controller,
   Get,
-  Request,
-  Response,
+  HttpStatus,
+  Req,
+  Res,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
@@ -15,14 +16,19 @@ export class GoogleCallbackController {
   @Get()
   @UseGuards(GoogleOAuthGuard)
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  async googleAuth(@Request() req) {}
+  async googleAuth(@Req() req) {}
   @Get('callback')
   @UseGuards(GoogleOAuthGuard)
-  async googleCallback(@Request() res) {
-    const response = await this.signupService.googleLogin(res);
+  async googleCallback(@Req() req) {
+    const response = await this.signupService.googleLogin(req);
     if (!response) {
       return new UnauthorizedException();
     }
-    return { status: 200, message: 'User created successfully' };
+    /* res.cookie('access_token', req.accessToken,{
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict'
+    }) */
+    return {}
   }
 }

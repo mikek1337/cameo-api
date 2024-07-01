@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 export class GoogleOAuthGuard extends AuthGuard('google') {
   constructor(private configService: ConfigService) {
     super({
-      prompt: 'select_account',
+      prompt: 'consent',
+      
     });
   }
 
