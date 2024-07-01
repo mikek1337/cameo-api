@@ -23,6 +23,6 @@ export class GoogleCallbackController {
     if (!response) {
       return new UnauthorizedException();
     }
-    return { message: 'User created successfully' };
+    return { status: 200, message: 'User created successfully' };
   }
 }
