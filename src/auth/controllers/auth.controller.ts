@@ -1,5 +1,5 @@
 import { Controller, UseGuards, Request, Post, Get } from '@nestjs/common';
-import { GoogleOAuthGuard } from 'src/google-oauth.guard';
+import { GoogleOAuthGuard } from 'src/guards/google-oauth.guard';
 @Controller('auth')
 export class AuthController {
   // eslint-disable-next-line @typescript-eslint/no-empty-function

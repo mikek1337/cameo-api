@@ -1,8 +1,8 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
-import { ApiKeyGuard } from './apikey.guard';
+import { ApiKeyGuard } from './guards/apikey.guard';
 import { ApiKeyService } from './apikey.service';
-import { GoogleOAuthGuard } from './google-oauth.guard';
+import { GoogleOAuthGuard } from './guards/google-oauth.guard';
 
 @Controller()
 export class AppController {

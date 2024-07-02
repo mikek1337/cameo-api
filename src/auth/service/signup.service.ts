@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { UserDto } from 'src/user/interfaces/user';
 import { UserService } from 'src/user/service/user.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class SignupService {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
+  ) {}
   async googleLogin(req) {
     if (!req.user) {
       return false;
@@ -12,7 +16,11 @@ export class SignupService {
       const exists = await this.userService.isUserExist(req.user.email);
       if (exists) {
         const { id } = await this.userService.getUserByEmail(req.user.email);
-        return this.userService.updateUser(id, req.user);
+        const updatedUser = await this.userService.updateUser(id, req.user);
+        return this.jwtService.sign({
+          sub: updatedUser.id,
+          email: updatedUser.email,
+        });
       }
       const user: UserDto = {
         first_name: req.user.firstName,
@@ -22,7 +30,8 @@ export class SignupService {
         access_token: req.user.accessToken,
         refresh_token: req.user.refreshToken,
       };
-      return this.userService.createUser(user);
+      const newUser = await this.userService.createUser(user);
+      return this.jwtService.sign({ sub: newUser.id, email: newUser.email });
     }
   }
 }

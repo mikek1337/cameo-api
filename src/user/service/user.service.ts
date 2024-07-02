@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/service/prisma.service';
 import { UserDto } from '../interfaces/user';
-import { last } from 'rxjs';
 import { User } from '@prisma/client';
 
 @Injectable()
 export class UserService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async createUser(newUser: UserDto): Promise<string> {
+  async createUser(newUser: UserDto): Promise<User> {
     const user = await this.prismaService.user.create({
       data: {
         first_name: newUser.first_name,
@@ -20,9 +19,9 @@ export class UserService {
       },
     });
     if (user) {
-      return user.id;
+      return user;
     }
-    return '';
+    return null;
   }
 
   async isUserExist(email: string): Promise<boolean> {
@@ -42,7 +41,7 @@ export class UserService {
     return user;
   }
 
-  async updateUser(id: string, user: User): Promise<boolean> {
+  async updateUser(id: string, user: User): Promise<User> {
     const updatedUser = await this.prismaService.user.update({
       where: {
         id: id,
@@ -57,8 +56,25 @@ export class UserService {
       },
     });
     if (updatedUser) {
-      return true;
+      return updatedUser;
     }
-    return false;
+    return null;
+  }
+
+  async getUserByToken(token: string): Promise<User> {
+    const user = await this.prismaService.user.findFirst({
+      where: {
+        access_token: token,
+      },
+    });
+    return user;
+  }
+  async getUserById(id: string): Promise<User> {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id,
+      },
+    });
+    return user;
   }
 }
