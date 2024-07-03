@@ -7,7 +7,7 @@ export class AuthController {
   @Get('google-redirect')
   @UseGuards(GoogleOAuthGuard)
   getSignup(@Request() req) {
-    console.log('google-redirect');
+   
     return req;
   }
 }

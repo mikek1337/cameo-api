@@ -10,7 +10,6 @@ export class AppController {
     private readonly appService: AppService,
     private readonly apiKeyService: ApiKeyService,
   ) {}
-  @UseGuards(ApiKeyGuard)
   @UseGuards(GoogleOAuthGuard)
   @Get()
   getHello(): string {

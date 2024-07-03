@@ -6,11 +6,22 @@ import { GoogleCallbackController } from './controllers/google-callback.controll
 import { PrismaModule } from 'src/database/prisma.module';
 import { UserService } from 'src/user/service/user.service';
 import { JwtStrategy } from './jwt.strategy';
-import { JwtService } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [
+    PassportModule,
+    PrismaModule,
+    JwtModule.register({
+      global:true,
+      secret: 'test',
+     
+      signOptions:{
+        expiresIn: '60s'
+      }
+    })],
   controllers: [AuthController, GoogleCallbackController],
   providers: [
     SignupService,
@@ -19,6 +30,7 @@ import { ConfigService } from '@nestjs/config';
     UserService,
     JwtService,
     ConfigService,
+    
   ],
 })
 export class AuthModule {}

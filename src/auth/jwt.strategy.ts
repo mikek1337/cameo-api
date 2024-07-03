@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy } from 'passport-jwt';
+import { ExtractJwt, Strategy, VerifyCallback } from 'passport-jwt';
 import { UserService } from 'src/user/service/user.service';
 
 export type JwtPayload = {
@@ -10,7 +10,7 @@ export type JwtPayload = {
 };
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
+export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     private readonly configService: ConfigService,
     private readonly userService: UserService,
@@ -20,16 +20,18 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       if (req && req.cookies) {
         token = req.cookies['access_token'];
       }
-      return token || ExtractJwt.fromAuthHeaderAsBearerToken()(req);
+      return token;
     };
     super({
-      jwtFromRequest: extractJwtFromCookie,
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: process.env.JWT_SECRET || 'test',
+      secretOrKey: `${process.env.JWT_SECRET}` || 'test',
     });
   }
-  async validate(payload: JwtPayload) {
+  async validate(payload: JwtPayload, done: VerifyCallback,) {
+    console.log('payload', payload)
     const user = await this.userService.getUserById(payload.sub);
+    console.log(user)
     if (!user) throw new UnauthorizedException();
 
     return {

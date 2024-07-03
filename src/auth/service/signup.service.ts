@@ -20,6 +20,8 @@ export class SignupService {
         return this.jwtService.sign({
           sub: updatedUser.id,
           email: updatedUser.email,
+        },{
+          secret: 'test',
         });
       }
       const user: UserDto = {

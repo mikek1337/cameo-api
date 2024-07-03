@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { ApiKeyService } from './apikey.service';
 import { UserModule } from './user/user.module';
+import { JwtModule } from '@nestjs/jwt';
 @Module({
   imports: [
     AuthModule,
@@ -12,6 +13,8 @@ import { UserModule } from './user/user.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+   
+
   ],
   controllers: [AppController],
   providers: [AppService, ApiKeyService],

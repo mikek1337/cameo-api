@@ -26,8 +26,8 @@ export class GoogleCallbackController {
     }
     // const res =  Res();
     //need to return access_token in cookie
-    console.log(req);
     res.cookie('access_token', token, {
+
       httpOnly: true,
       secure: false,
       sameSite: 'strict',
