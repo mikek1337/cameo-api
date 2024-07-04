@@ -26,11 +26,10 @@ export class GoogleCallbackController {
     }
     // const res =  Res();
     //need to return access_token in cookie
-    res.cookie('access_token', token, {
-
+    res.cookie('token', token, {
       httpOnly: true,
       secure: false,
-      sameSite: 'strict',
+      sameSite: true,
     });
     return { status: 'success', message: 'User logged in successfully' };
   }

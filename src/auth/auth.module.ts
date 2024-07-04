@@ -7,21 +7,11 @@ import { PrismaModule } from 'src/database/prisma.module';
 import { UserService } from 'src/user/service/user.service';
 import { JwtStrategy } from './jwt.strategy';
 import { JwtModule, JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 
 @Module({
-  imports: [
-    PassportModule,
-    PrismaModule,
-    JwtModule.register({
-      global:true,
-      secret: 'test',
-     
-      signOptions:{
-        expiresIn: '60s'
-      }
-    })],
+  imports: [PassportModule, PrismaModule],
   controllers: [AuthController, GoogleCallbackController],
   providers: [
     SignupService,
@@ -30,7 +20,6 @@ import { PassportModule } from '@nestjs/passport';
     UserService,
     JwtService,
     ConfigService,
-    
   ],
 })
 export class AuthModule {}

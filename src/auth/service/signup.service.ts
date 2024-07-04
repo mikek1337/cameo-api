@@ -17,12 +17,15 @@ export class SignupService {
       if (exists) {
         const { id } = await this.userService.getUserByEmail(req.user.email);
         const updatedUser = await this.userService.updateUser(id, req.user);
-        return this.jwtService.sign({
-          sub: updatedUser.id,
-          email: updatedUser.email,
-        },{
-          secret: 'test',
-        });
+        return this.jwtService.sign(
+          {
+            sub: updatedUser.id,
+            email: updatedUser.email,
+          },
+          {
+            secret: process.env.JWT_SECRET,
+          },
+        );
       }
       const user: UserDto = {
         first_name: req.user.firstName,
@@ -33,7 +36,12 @@ export class SignupService {
         refresh_token: req.user.refreshToken,
       };
       const newUser = await this.userService.createUser(user);
-      return this.jwtService.sign({ sub: newUser.id, email: newUser.email });
+      return this.jwtService.sign(
+        { sub: newUser.id, email: newUser.email },
+        {
+          secret: process.env.JWT_SECRET,
+        },
+      );
     }
   }
 }

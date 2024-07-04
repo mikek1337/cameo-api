@@ -8,8 +8,7 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getUser(@Req() req:Request) {
-    console.log()
+  async getUser(@Req() req: Request) {
     const token = req.cookies['access_token'];
     const user = await this.userService.getUserByToken(token);
     return user;
