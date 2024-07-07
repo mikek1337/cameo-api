@@ -10,6 +10,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: process.env.CALLBACK_URL,
       scope: ['email', 'profile'],
+      
     });
   }
   async validate(
