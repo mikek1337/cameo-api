@@ -83,3 +83,5 @@ model Payment {
   payment_by  Consumer @relation(fields: [consumer_id], references: [id])
   payment_at  DateTime @default(now())
 }
+
+
