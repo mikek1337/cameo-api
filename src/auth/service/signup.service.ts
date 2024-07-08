@@ -45,10 +45,8 @@ export class SignupService {
     }
   }
 
-  async credAuth(email:string, password:string):string{
+  async credAuth(email:string, password:string){
     const exists = await this.userService.isUserExist(email);
-    if(exists){
-      const {id}
-    }
+    
   }
 }
