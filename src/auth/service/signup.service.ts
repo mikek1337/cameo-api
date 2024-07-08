@@ -44,4 +44,11 @@ export class SignupService {
       );
     }
   }
+
+  async credAuth(email:string, password:string):string{
+    const exists = await this.userService.isUserExist(email);
+    if(exists){
+      const {id}
+    }
+  }
 }
