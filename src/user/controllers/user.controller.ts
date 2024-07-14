@@ -13,17 +13,18 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getUser(@Req() req: Request) {
-    const token = req.cookies['access_token'];
-    const user = await this.userService.getUserByToken(token);
+  async getUser(@Req() req: any) {
+    const {id} = req?.user;
+    console.log(id);
+    const user = await this.userService.getUserById(id);
     return user;
   }
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  async updateUser(@Req() req: Request, @Body() body: CreatorDto) {
-    const token = req.cookies['access_token'];
-    const user = await this.userService.getUserByToken(token);
+  async updateUser(@Req() req: any, @Body() body: CreatorDto) {
+    const {id} = req.user;
+    const user = await this.userService.getUserById(id);
     const creator = this.creatorService.createCreator({
       first_name: body.first_name,
       last_name: body.last_name,
@@ -32,5 +33,14 @@ export class UserController {
       userid: user.id,
     });
     return creator;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('role')
+  async getRole(@Req() req:Request){
+    console.log(req.user);
+    const token = req.cookies['access_token'];
+    const role = await this.userService.getRole(token);
+    return role;
   }
 }

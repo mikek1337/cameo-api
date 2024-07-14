@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  Post,
   Req,
   Res,
   UnauthorizedException,
@@ -17,7 +18,7 @@ export class GoogleCallbackController {
   @UseGuards(GoogleOAuthGuard)
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   async googleAuth(@Req() req) {}
-  @Get('callback')
+  @Post('callback')
   @UseGuards(GoogleOAuthGuard)
   async googleCallback(@Req() req, @Res({ passthrough: true }) res: Response) {
     const token = await this.signupService.googleLogin(req);

@@ -18,4 +18,33 @@ export class CreatorService {
       },
     });
   }
+
+  getTopCreators(){
+    return this.prismaService.creator.findMany({
+      include:{
+        user:{
+          select:{
+            profile_picture:true
+          }
+        }
+      }
+    });
+  }
+
+  getCreator(creatorID:string){
+    return this.prismaService.creator.findUnique(
+      {
+        where:{
+          id:creatorID
+        },
+        include:{
+          user:{
+            select:{
+              profile_picture: true
+            }
+          }
+        }
+      }
+    )
+  }
 }

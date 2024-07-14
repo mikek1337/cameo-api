@@ -10,7 +10,7 @@ async function bootstrap() {
   app.use(cookieParser());
   if (frontendURL) {
     app.enableCors({
-      origin: configService.get('FRONTEND_URL'),
+      origin:frontendURL,
       credentials: true,
     });
   }

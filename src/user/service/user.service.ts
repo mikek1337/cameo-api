@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/service/prisma.service';
 import { UserDto } from '../interfaces/user';
 import { User } from '@prisma/client';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService, private readonly jwtService:JwtService) {}
 
   async createUser(newUser: UserDto): Promise<User> {
     const user = await this.prismaService.user.create({
@@ -62,9 +63,9 @@ export class UserService {
   }
 
   async getUserByToken(token: string): Promise<User> {
-    const user = await this.prismaService.user.findFirst({
+      const user = await this.prismaService.user.findFirst({
       where: {
-        access_token: token,
+        id: token,
       },
     });
     return user;
@@ -76,5 +77,14 @@ export class UserService {
       },
     });
     return user;
+  }
+
+  async getRole(id: string): Promise<string> { 
+    const creator = await this.prismaService.creator.findFirst({
+      where:{
+        userid:id
+      }
+    });
+    return creator !== null ? "creator":"consumer"
   }
 }
