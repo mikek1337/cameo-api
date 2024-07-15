@@ -6,7 +6,10 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prismaService: PrismaService, private readonly jwtService:JwtService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   async createUser(newUser: UserDto): Promise<User> {
     const user = await this.prismaService.user.create({
@@ -63,7 +66,7 @@ export class UserService {
   }
 
   async getUserByToken(token: string): Promise<User> {
-      const user = await this.prismaService.user.findFirst({
+    const user = await this.prismaService.user.findFirst({
       where: {
         id: token,
       },
@@ -79,12 +82,18 @@ export class UserService {
     return user;
   }
 
-  async getRole(id: string): Promise<string> { 
-    const creator = await this.prismaService.creator.findFirst({
-      where:{
-        userid:id
-      }
+  async getRole(id: string): Promise<string> {
+    const creatorCount = await this.prismaService.creator.count({
+      where: {
+        userid: id,
+      },
     });
-    return creator !== null ? "creator":"consumer"
+
+    enum UserRole {
+      Creator = 'creator',
+      Consumer = 'consumer',
+    }
+
+    return creatorCount > 0 ? UserRole.Creator : UserRole.Consumer;
   }
 }
