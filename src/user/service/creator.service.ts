@@ -45,4 +45,19 @@ export class CreatorService {
       },
     });
   }
+
+  getCreatorByUserID(userID: string) {
+    return this.prismaService.creator.findFirst({
+      where: {
+        userid: userID,
+      },
+      include: {
+        user: {
+          select: {
+            profile_picture: true,
+          },
+        },
+      },
+    });
+  }
 }
