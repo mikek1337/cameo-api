@@ -10,8 +10,7 @@ export class CreatorService {
   createCreator(newCreator: CreatorDto): Promise<Creator> {
     return this.prismaService.creator.create({
       data: {
-        first_name: newCreator.first_name,
-        last_name: newCreator.last_name,
+        profession: newCreator.profession,
         bio: newCreator.bio,
         price: newCreator.price,
         userid: newCreator.userid,
@@ -24,6 +23,8 @@ export class CreatorService {
       include: {
         user: {
           select: {
+            first_name: true,
+            last_name: true,
             profile_picture: true,
           },
         },
@@ -39,6 +40,8 @@ export class CreatorService {
       include: {
         user: {
           select: {
+            first_name: true,
+            last_name: true,
             profile_picture: true,
           },
         },
@@ -54,9 +57,23 @@ export class CreatorService {
       include: {
         user: {
           select: {
+            first_name: true,
+            last_name: true,
             profile_picture: true,
           },
         },
+      },
+    });
+  }
+
+  updateCreator(id: string, creator: Creator): Promise<Creator> {
+    return this.prismaService.creator.update({
+      where: {
+        id: id,
+      },
+      data: {
+        bio: creator.bio,
+        price: creator.price,
       },
     });
   }

@@ -27,10 +27,8 @@ model User {
 
 model Creator {
   id           String    @id @default(auto()) @map("_id") @db.ObjectId
-  first_name   String    @db.String
-  last_name    String    @db.String
   bio          String    @db.String
-  profession   String    @db.String
+  profession   String?    @db.String
   social_links String[]  @db.String
   created_at   DateTime  @default(now())
   updated_at   DateTime  @updatedAt
