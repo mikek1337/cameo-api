@@ -1,4 +1,4 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { CreatorService } from '../service/creator.service';
 import { JwtAuthGuard } from 'src/guards/jwt.guard';
 
@@ -13,7 +13,8 @@ export class CreatorController {
   }
 
   @Get('creator')
-  getCreator(@Query() creatorID: string) {
+  getCreator(@Query('creatorID') creatorID: string) {
+    console.log(creatorID);
     return this.creatorService.getCreator(creatorID);
   }
 }
