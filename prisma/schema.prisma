@@ -41,6 +41,7 @@ model Creator {
 
 
 
+
 model Consumer {
   id         String    @id @default(auto()) @map("_id") @db.ObjectId
   username   String    @db.String

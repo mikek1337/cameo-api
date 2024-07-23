@@ -77,4 +77,12 @@ export class CreatorService {
       },
     });
   }
+
+  getVideos(creatorID: string) {
+    return this.prismaService.video.findMany({
+      where: {
+        creator_id: creatorID,
+      },
+    });
+  }
 }

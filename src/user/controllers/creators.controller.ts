@@ -17,4 +17,9 @@ export class CreatorController {
     console.log(creatorID);
     return this.creatorService.getCreator(creatorID);
   }
+
+  @Get('videos')
+  getVideos(@Query('creatorID') creatorID: string) {
+    return this.creatorService.getVideos(creatorID);
+  }
 }
