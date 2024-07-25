@@ -37,6 +37,7 @@ model Creator {
   user         User      @relation(fields: [userid], references: [id])
   videos       Video[]
   payments     Payment[]
+  video_requests VideoRequest[]
   ratings   Rating[]
 }
 
@@ -51,6 +52,7 @@ model Consumer {
   userid     String    @db.String
   user       User      @relation(fields: [userid], references: [id])
   videos     Video[]
+  video_requests VideoRequest[]
   payments   Payment[]
   ratings   Rating[]
 }
@@ -63,6 +65,7 @@ model Rating{
   comment String @db.String
   rated_by Consumer @relation(fields: [consumer_id], references: [id])
   rated_for Creator @relation(fields: [creator_id], references: [id])
+  created_at DateTime @default(now())
 }
 
 model Video {
@@ -76,6 +79,21 @@ model Video {
   uplodaded_by  Creator  @relation(fields: [creator_id], references: [id])
   uploaded_for  Consumer @relation(fields: [consumer_id], references: [id])
   uploaded_at   DateTime @default(now())
+  created_at    DateTime @default(now())
+}
+
+
+model VideoRequest{
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  title         String   @db.String
+  description   String   @db.String
+  creator_id    String   @db.String
+  consumer_id   String   @db.String
+  requested_by  Consumer  @relation(fields: [consumer_id], references: [id])
+  requested_for  Creator @relation(fields: [creator_id], references: [id])
+  requested_at   DateTime @default(now())
+  created_at    DateTime @default(now())
+
 }
 
 model Message {
