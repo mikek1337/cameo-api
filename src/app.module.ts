@@ -7,6 +7,9 @@ import { ApiKeyService } from './apikey.service';
 import { UserModule } from './user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtAuthGuard } from './guards/jwt.guard';
+import { VideoController } from './video/controller/video.controller';
+import { VideoService } from './video/service/video.service';
+import { VideoModule } from './video/video.module';
 @Module({
   imports: [
     AuthModule,
@@ -14,6 +17,7 @@ import { JwtAuthGuard } from './guards/jwt.guard';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    VideoModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
