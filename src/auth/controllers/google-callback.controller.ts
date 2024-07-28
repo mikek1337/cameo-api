@@ -18,20 +18,21 @@ export class GoogleCallbackController {
   @UseGuards(GoogleOAuthGuard)
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   async googleAuth(@Req() req) {}
-  @Post('callback')
+  @Get('callback')
   @UseGuards(GoogleOAuthGuard)
-  async googleCallback(@Req() req, @Res({ passthrough: true }) res: Response) {
+  async googleCallback(@Req() req: Request, @Res({ passthrough: true }) res: any) {
     const token = await this.signupService.googleLogin(req);
     if (!token) {
       return new UnauthorizedException();
     }
+    console.log(token);
     // const res =  Res();
     //need to return access_token in cookie
+    //response isn't being set in the cookie 
     res.cookie('token', token, {
       httpOnly: true,
-      secure: false,
-      sameSite: true,
     });
-    return { status: 'success', message: 'User logged in successfully' };
+    return {message: "fuck this shit"}
+    
   }
 }
