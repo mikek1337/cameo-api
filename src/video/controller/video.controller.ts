@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { VideoRequest } from '../dto/videoRequest';
 import { VideoService } from '../service/video.service';
 import { JwtAuthGuard } from 'src/guards/jwt.guard';
@@ -19,5 +19,14 @@ export class VideoController {
       return { message: 'Request has been made' };
     }
     return { message: 'Request failed' };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('requestcount')
+  async requestCount(@Req() req:any){
+    const { id } = req.user;
+    console.log(req.user)
+    const count = await this.videoService.requestCounter(id);
+    return count;
   }
 }
